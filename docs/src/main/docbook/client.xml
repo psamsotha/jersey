@@ -964,4 +964,119 @@ Client client = ClientBuilder.newBuilder().sslContext(sslContext).build();</prog
 
 
     </section>
+    
+    <section>
+        <title>Client Proxies</title>
+        
+        <section>
+            <title>Dependency</title>
+            <programlisting language="xml">&lt;dependency>
+	&lt;groupId>org.glassfish.jersey.ext&lt;/groupId>
+	&lt;artifactId>jersey-proxy-client&lt;/artifactId>
+	&lt;version>&version;&lt;/version>
+&lt;/dependency></programlisting>
+        </section>
+        
+        <section>
+            <title>Creating Client Proxies</title>
+            
+            <para>
+                As an alternative to explicitly making requests with the client API, Jersey
+                offers a higher level API, that makes use of proxies (or more precisely,
+                Java's &dynamic.proxies.link;). The API enables utilization of 
+                the server-side JAX-RS annotations to describe the server-side resources and 
+                dynamically generate client-side proxy objects for them.
+            </para>
+            
+            <para> Consider a server which exposes a resource at
+                    <literal>http://localhost:8080</literal>. The resource can be described by the
+                following interface:
+            </para>
+            
+            <example>
+                <title>Resource Interface for Client Proxy</title>
+                
+                <programlisting linenumbering="numbered" language="java">@Path("myresource")
+public interface MyResourceIfc {
+    @GET
+    @Produces("text/plain")
+    String get();
+ 
+    @POST
+    @Consumes("application/xml")
+    @Produces("application/xml")
+    MyBean postEcho(MyBean bean);
+ 
+    @Path("{id}")
+    @GET
+    @Produces("text/plain")
+    String getById(@PathParam("id") String id);
+}</programlisting>
+            </example>
+            
+            <para> You can use the &jersey.client.proxy.WebResourceFactory; class to create a proxy
+                that will make the remote call to the server-side resource. Here is an example:
+            </para>
+            
+            <example>
+                <title>Creating Client Proxy</title>
+                
+                <programlisting linenumbering="numbered" language="java">Client client = ClientBuilder.newClient();
+WebTarget target = client.target("http://localhost:8080/");
+MyResourceIfc resource = WebResourceFactory.newResource(MyResourceIfc.class, target);
+
+String responseFromGet = resource.get();
+MyBean responseFromPost = resource.postEcho(myBeanInstance);
+String responseFromGetById = resource.getById("abc");</programlisting>
+            </example>
+            
+            <para>
+                One thing to note is that you should not confuse the above interface with
+                any actual server-side JAX-RS resource. Though the use of JAX-RS server-side
+                annotations are used, this is simply a helper to map client side request
+                parameters, headers, etc. They are used by the proxy factory to create
+                the actual proxy object. So you can create an interface to map to any
+                HTTP requested resource.
+            </para>
+            
+            <para> With that said, it is generally possible to use an actual JAX-RS server-side
+                resource interface (should you have one). A problem this poses though is the fact
+                that server side methods often accept all types of arguments that conflict with the
+                automatic discovery of the entity parameter. Take for example:
+            </para>
+            
+            <example>
+                <title>Resource Interface with Multiple Parameters</title>
+                
+                <programlisting linenumbering="numbered" language="java">public interface MyResourceIfc {
+ 
+    @POST
+    @Consumes("application/xml")
+    @Produces("application/xml")
+    MyBean postEcho(MyBean bean, 
+                    @QueryParam("param") param,
+                    @Context HttpServletRequest request, 
+                    @CustomAnnotation CustomObject obj);
+}</programlisting>
+            </example>
+            
+            <para> The problem this poses for the proxy factory is that there are an infinite number
+                of possible annotations (and parameter types) that the factory would need to
+                consider to be able to determine which parameter is the entity. To solve this
+                problem, there are a couple of overloaded factory methods that take the entity index
+                of the method signature. So in the above example the index would be 0 (as it's
+                zero-based).
+            </para>
+            
+            <example>
+                <title>Client Proxy with Entity Index</title>
+                
+                <programlisting linenumbering="numbered" language="java">Client client = ClientBuilder.newClient();
+WebTarget target = client.target("http://localhost:8080/");
+MyResourceIfc resource = WebResourceFactory.newResource(MyResourceIfc.class, target, 0);
+
+MyBean responseFromPost = resource.postEcho(myBeanInstance, "hello", null, null);</programlisting>
+            </example>
+        </section>
+    </section>
 </chapter>

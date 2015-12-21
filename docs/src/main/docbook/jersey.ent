@@ -66,6 +66,7 @@
 <!ENTITY bv11.javadoc.uri "http://docs.jboss.org/hibernate/beanvalidation/spec/1.1/api">
 <!ENTITY cloud.guide "<link xlink:href='http://docs.oracle.com/cloud/131/developer_services/CSJSU/java-develop.htm#BABHDAJH'>guide</link>">
 <!ENTITY felix.link "<link xlink:href='http://felix.apache.org/site/index.html'>Apache Felix</link>">
+<!ENTITY dynamic.proxies.link "<link xlink:href='https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html'>dynamic proxies</link>">
 <!ENTITY grizzly.link "<link xlink:href='http://grizzly.java.net/'>Grizzly</link>">
 <!ENTITY guava.javadoc.uri "http://docs.guava-libraries.googlecode.com/git-history/v&guava.version;/javadoc/">
 <!ENTITY guava.link "<link xlink:href='https://code.google.com/p/guava-libraries/'>Guava</link>">
@@ -348,6 +349,7 @@
 <!ENTITY jersey.client.oauth2.OAuth2FlowGoogleBuilder "<link xlink:href='&jersey.javadoc.uri.prefix;/client/oauth2/OAuth2FlowGoogleBuilder.html'>OAuth2FlowGoogleBuilder</link>">
 <!ENTITY jersey.client.oauth2.OAuth2Parameters "<link xlink:href='&jersey.javadoc.uri.prefix;/client/oauth2/OAuth2Parameters.html'>OAuth2Parameters</link>">
 <!ENTITY jersey.client.oauth2.TokenResult "<link xlink:href='&jersey.javadoc.uri.prefix;/client/oauth2/TokenResult.html'>TokenResult</link>">
+<!ENTITY jersey.client.proxy.WebResourceFactory "<link xlink:href='&jersey.javadoc.uri.prefix;/client/proxy/WebResourceFactory.html'>WebResourceFactory</link>">
 <!ENTITY jersey.common.Beta "<link xlink:href='&jersey.javadoc.uri.prefix;/Beta.html'>Beta</link>">
 <!ENTITY jersey.common.CommonProperties "<link xlink:href='&jersey.javadoc.uri.prefix;/CommonProperties.html'>CommonProperties</link>">
 <!ENTITY jersey.common.CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE "<link xlink:href='&jersey.javadoc.uri.prefix;/CommonProperties.html#FEATURE_AUTO_DISCOVERY_DISABLE'>CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE</link>" >
